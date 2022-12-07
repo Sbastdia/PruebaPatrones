@@ -28,234 +28,6 @@
 
 
 
-# Para la resolución de este problema, usaré el Factory Method.
-
-# class Ordenador_base():
-
-# 	""" Esta es la base del ordenador, compuesta por la unidad central, un dispositivo de entreda y otro de salida. """
-
-# 	def __init__(self, unidad_central, dispositivo_entrada, dispositivo_salida):
-#         self.unidad_central=unidad_central
-#         self.dispositivo_entrada=dispositivo_entrada
-#         self.dispositivo_salida=dispositivo_salida
-
-
-# 	# def localize(self, msg):
-
-# 	# 	"""change the message using translations"""
-# 	# 	return self.translations.get(msg, msg)
-
-# class dispositivo_entrada():
-# 	"""Definimos los periféricos de etrada: Teclado, Ratón y Tableta gráfica"""
-
-# 	def __init__(self, nombre_fabricante, modelo, precio_venta):
-# 		self.nombre_fabricante=nombre_fabricante
-#         self.modelo=modelo
-#         self.precio_venta=precio_venta
-
-#     def necesario_conocer_de(self, tipo_de_conector, puerto_valido):
-#         pass
-
-# 	# def localize(self, msg):
-
-# 	# 	"""change the message using translations"""
-# 	# 	return self.translations.get(msg, msg)
-
-# class dispositivo_salida():
-# 	"""Definimos los periféricos de salida, Pantallas e impresora (de inyeccion o laser)"""
-
-#     def necesario_conocer_ds(self, puerto_valido, tipo_cartucho, pag_impresas_cambio_toner):
-#         pass
-
-# 	# def localize(self, msg):
-# 	# 	return msg
-
-# def Factory(language ="English"):
-
-# 	"""Factory Method"""
-# 	localizers = {
-# 		"Ordenador Base": Ordenador_base,
-# 		"Dispositivos de entrada": dispositivo_entrada(),
-# 		"Dispositivos de salida": dispositivo_salida(),
-# 	}
-
-# 	return localizers[language]()
-
-
-# class mi_lista():
-#     def __init__(self, precio_total_lista, lista_dispositivos):
-#         self.precio_total_lista = precio_total_lista
-#         self.lista_dispositivos = lista_dispositivos
-
-#     def poner_lista(self, dispositivo):
-#         #aqui sumar al precio de la lista, el precio del periférico que vamos a poner al ordenador
-#         self.precio_total_lista #=+ dispositivo_salida().concretar_disporiivo().precio
-
-#     def quitar_lista(self, dispositivo):
-#         # primero hay que ver que el dispositivo que vamos a quitar, lo teniamos y que no es un elemento base pq no se puede quitar
-#         if dispositivo is in self.lista_dispositivos:
-#             self.lista_dispositivos.remove(self.lista_dispositivos)
-#         elif:
-#             print('No tenías este dispositivo añadido a lka lista')
-#         if dispositivo== unidad_central:
-#             print('Imposible quitar este dispositivo puesto que conforma la unidad básica del ordenador')
-
-#         #tambien hay que comprobar que  minimo se queda con un dispositivo de entrada y otro de salida
-#         #aqui sumar al precio de la lista, el precio del periférico que vamos a poner al ordenador
-#         self.precio_total_lista #=- dispositivo_salida().concretar_disporiivo().precio
-
-
-
-# from abc import ABCMeta, abstractmethod
-
-# #lo que haría: dos IBulder para componentes de entrada y salida
-
-# class IBuilder_entrada(metaclass=ABCMeta):
-#     "La interfaz del builder de los dispositivos de entrada"
-
-#     #todos los dispotivos de entrada tienen que tener los siguientes atributos
-#     def __init__(self, nombre_fabricante, modelo,precio_venta):
-#         self.nombre_fabricante = nombre_fabricante
-#         self.modelo=modelo
-#         self.precio_venta = precio_venta
-
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_teclado(self, tipo_conector, puerto_valido):
-#         "Build del dispositivo de entrada teclado"
-#         self.nombre_fabricante ='Prueba 1 Teclado'
-#         self.modelo='Logitec'
-#         self.precio_venta =18
-#         tipo_conector='C'
-#         puerto_valido=3
-
-
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_raton(self, tipo_conector, puerto_valido):
-#         "Build del ratón"
-#         self.nombre_fabricante ='Prueba 1 Ratón'
-#         self.modelo='Asus'
-#         self.precio_venta =20
-#         tipo_conector='A'
-#         puerto_valido=2
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_tabletaGrafica(self, tipo_conector, puerto_valido):
-#         "Build de la tableta gráfica"
-#         self.nombre_fabricante ='Prueba 1 TabletaGráfica'
-#         self.modelo='Dell'
-#         self.precio_venta =450
-#         tipo_conector='B'
-#         puerto_valido=1
-
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_pantallaTactil(self, tipo_conector, puerto_valido):
-#         "Build de la tableta gráfica"
-#         self.nombre_fabricante ='Prueba 1 pantalla táctil'
-#         self.modelo='Samsung'
-#         self.precio_venta =470
-#         tipo_conector='G'
-#         puerto_valido=6
-
-#     @staticmethod
-#     @abstractmethod
-#     def get_result():
-#         "Return the final product"
-
-
-
-# class IBuilder_salida(metaclass=ABCMeta):
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_pantallas(puerto_valido):
-#         puerto_valido=6
-
-#     tipo=[]
-#     tipo_recambio=[]
-#     @staticmethod
-#     @abstractmethod
-#     def build_impresoras(puerto_valido,tipo, tipo_recambio, pags):
-#         puerto_valido=7
-#         tipo=['Inyección', 'Láser']
-#         tipo_recambio=['Cartucho', 'Tóner']
-#         pags=1490
-
-#     @staticmethod
-#     @abstractmethod
-#     def build_pantallaTactil(nombre_fabricante, modelo, precio_venta, tipo_conector, puerto_valido):
-#         "Build de la tableta gráfica"
-#         nombre_fabricante ='Prueba 1 pantalla táctil'
-#         modelo='Samsung'
-#         precio_venta =470
-#         tipo_conector='G'
-#         puerto_valido=6
-
-
-
-# class Builder(IBuilder_entrada, IBuilder_salida):
-#     "The Concrete Builder."
-
-#     def __init__(self):
-#         self.product = Product()
-
-#     def build_teclado(self):
-#         self.product.parts.append('Teclado')
-#         return self
-
-#     def build_raton(self):
-#         self.product.parts.append('Ratón')
-#         return self
-
-#     def build_tabletaGrafica(self):
-#         self.product.parts.append('Tableta Gráfica')
-#         return self
-
-
-#     def build_pantallaTactil(self):
-#         self.product.parts.append('Pantalla Táctil')
-#         return self
-
-#     def build_pantallas(self):
-#         self.product.parts.append('Pantalla')
-#         return self
-
-#     def build_Impresora(self):
-#         self.product.parts.append('Impresora')
-#         return self
-
-#     def get_result(self):
-#         return self.product
-
-# class Product():
-#     "The Product"
-
-#     def __init__(self):
-#         self.parts = []
-
-# class Director:
-#     "The Director, building a complex representation."
-
-#     @staticmethod
-#     def construct():
-#         "Constructs and returns the final product"
-#         print(Builder().build_teclado())
-#         print(Builder().get_result)
-#         # return Builder()\
-#         #     .build_teclado()\
-#         #     .build_raton()\
-#         #     #.build_impresoras(1, 'inyeccion', 'cartucho')\
-#         #     .get_result()
-
-# # The Client
-# PRODUCT = Director.construct()
-# print(PRODUCT.parts)
 
 
 from __future__ import annotations
@@ -273,14 +45,14 @@ class Builder(ABC):
         pass
 
 
-    def teclado(self) -> None:
+    def teclado(self, nombre_fabricante, modelo, precio) -> None:
         pass
 
-    def raton(self) -> None:
+    def raton(self, nombre_fabricante, modelo, precio) -> None:
         pass
 
 
-    def tabletaGrafica(self) -> None:
+    def tabletaGrafica(self, nombre_fabricante, modelo, precio) -> None:
         pass
 
     def pantalla(self) -> None:
@@ -310,8 +82,13 @@ class ConcreteBuilder1(Builder):
     def produce_unidad_central(self) -> None:
         self._product.add("unidad_central")
 
-    def produce_teclado(self) -> None:
+    def produce_teclado(self,  nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
         self._product.add("teclado")
+        print('(Teclado) Nombre del fabricante:'+ nombre_fabricante)
+        print('(Teclado) modelo: '+ modelo)
+        print('(Teclado) precio: '+ str(precio))
+        print('(Teclado) tipo_conector: '+ tipo_conector)
+        print('(Teclado) puerto_valido: '+ str(puerto_valido))
 
     def produce_raton(self) -> None:
         self._product.add("raton")
@@ -356,12 +133,12 @@ class Director:
 
     def build_minimal_viable_product(self) -> None:
         self.builder.produce_unidad_central()
-        self.builder.produce_teclado()
+        self.builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
         self.builder.produce_pantalla()
 
     def build_full_featured_product(self) -> None:
         self.builder.produce_unidad_central()
-        self.builder.produce_teclado()
+        self.builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
         self.builder.produce_raton()
         self.builder.produce_tabletaGrafica()
         self.builder.produce_pantalla()
@@ -387,7 +164,7 @@ if __name__ == "__main__":
 
     print("Custom product: ")
     builder.produce_unidad_central()
-    builder.produce_teclado()
+    builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
     builder.produce_raton()
     builder.produce_impresora()
     builder.product.list_parts()
