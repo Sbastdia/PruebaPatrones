@@ -45,14 +45,13 @@ class Builder(ABC):
         pass
 
 
-    def teclado(self, nombre_fabricante, modelo, precio) -> None:
+    def teclado(self) -> None:
         pass
 
-    def raton(self, nombre_fabricante, modelo, precio) -> None:
+    def raton(self) -> None:
         pass
 
-
-    def tabletaGrafica(self, nombre_fabricante, modelo, precio) -> None:
+    def tabletaGrafica(self) -> None:
         pass
 
     def pantalla(self) -> None:
@@ -82,7 +81,10 @@ class ConcreteBuilder1(Builder):
     def produce_unidad_central(self) -> None:
         self._product.add("unidad_central")
 
-    def produce_teclado(self,  nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
+    def produce_teclado(self) -> None:
+        self._product.add("Teclado")
+
+    def get_teclado(self,  nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
         self._product.add("teclado")
         print('(Teclado) Nombre del fabricante:'+ nombre_fabricante)
         print('(Teclado) modelo: '+ modelo)
@@ -91,19 +93,55 @@ class ConcreteBuilder1(Builder):
         print('(Teclado) puerto_valido: '+ str(puerto_valido))
 
     def produce_raton(self) -> None:
+        self._product.add("Ratón")
+
+
+    def get_raton(self, nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
         self._product.add("raton")
+        print('(Ratón) Nombre del fabricante:'+ nombre_fabricante)
+        print('(Ratón) modelo: '+ modelo)
+        print('(Ratón) precio: '+ str(precio))
+        print('(Ratón) tipo_conector: '+ tipo_conector)
+        print('(Ratón) puerto_valido: '+ str(puerto_valido))
 
     def produce_tabletaGrafica(self) -> None:
+        self._product.add("Tableta Gráfica")
+
+    def get_tabletaGrafica(self, nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
         self._product.add("Tableta Grafica")
+        print('(Tableta Gráfica) Nombre del fabricante:'+ nombre_fabricante)
+        print('(Tableta Gráfic) modelo: '+ modelo)
+        print('(Tableta Gráfic) precio: '+ str(precio))
+        print('(Tableta Gráfic) tipo_conector: '+ tipo_conector)
+        print('(Tableta Gráfic) puerto_valido: '+ str(puerto_valido))
 
     def produce_pantalla(self) -> None:
         self._product.add("Pantalla")
 
+    def get_pantalla(self, puerto_valido) -> None:
+        self._product.add("Pantalla")
+        print('(Pantalla) Puerto válido: '+ puerto_valido)
+
     def produce_impresora(self) -> None:
         self._product.add("impresora")
 
+    def get_impresora(self, puerto_valido, tipo_impresora, tipo_recambio, pags):
+        self._product.add("impresora")
+        print('(Impresora) Puerto válido: '+ str(puerto_valido))
+        print('(Impresora) Tipo de impresora: '+ tipo_impresora)
+        print('(Impresora) Tipo de recambio: '+ tipo_recambio)
+        print('(Impresora) Páginas impresas desde el último cambio: '+ str(pags))
+
     def produce_pantalla_tactil(self) -> None:
+        self._product.add("Pantalla Táctil")
+
+    def get_pantalla_tactil(self, nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
         self._product.add("pantalla tactil")
+        print('(Pantalla Táctil) Nombre del fabricante:'+ nombre_fabricante)
+        print('(Pantalla Táctil) modelo: '+ modelo)
+        print('(Pantalla Táctil) precio: '+ str(precio))
+        print('(Pantalla Táctil) tipo_conector: '+ tipo_conector)
+        print('(Pantalla Táctil) puerto_valido: '+ str(puerto_valido))
 
 
 class Product1():
@@ -133,16 +171,17 @@ class Director:
 
     def build_minimal_viable_product(self) -> None:
         self.builder.produce_unidad_central()
-        self.builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
+        self.builder.produce_teclado()
         self.builder.produce_pantalla()
 
     def build_full_featured_product(self) -> None:
         self.builder.produce_unidad_central()
-        self.builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
+        self.builder.produce_teclado()
         self.builder.produce_raton()
         self.builder.produce_tabletaGrafica()
         self.builder.produce_pantalla()
         self.builder.produce_impresora()
+        self.builder.produce_pantalla_tactil()
 
 if __name__ == "__main__":
 
@@ -162,15 +201,23 @@ if __name__ == "__main__":
 
     print("\n")
 
-    print("Custom product: ")
+    print("Custom1 product: ")
     builder.produce_unidad_central()
-    builder.produce_teclado('Pablo', 'ASUS', 12, 'T', 2)
-    builder.produce_raton()
-    builder.produce_impresora()
+    builder.get_teclado('Pablo', 'ASUS', 12, 'T', 2)
+    builder.get_raton('María', 'DELL', 34, 'A', 1)
+    builder.get_impresora(5, 'Inyección', 'Cartucho', 0)
     builder.product.list_parts()
 
 
+    print("\n")
 
-#lista de patrones de diseño que veo útiles para el ejercicio:
-#    -BUILDER
-#    -FACTORY
+    print("Custom2 product: ")
+    builder.produce_unidad_central()
+    builder.get_tabletaGrafica('Steve', 'Apple', 400, 'C', 3)
+    builder.get_teclado('Bill', 'Microsoft', 230, 'B', 1)
+    builder.get_pantalla_tactil('Rubén', 'HP', 69, 'R', 9)
+    builder.product.list_parts()
+
+
+    #quedaría: crear una condición que evalue que los elementos mínimos están en la lista para poder crear un ordenador
+    #también estructurar mejor el ConcreteBuilder1 (clases de entrada y salida)
