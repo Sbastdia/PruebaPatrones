@@ -1,133 +1,96 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 
 #Patrón Bridge
 
+class Base(ABC):
 
-class Abstraction:
-    """
-    The Abstraction defines the interface for the "control" part of the two
-    class hierarchies. It maintains a reference to an object of the
-    Implementation hierarchy and delegates all of the real work to this object.
-    """
+    @abstractmethod
+    def numeroAmbulancias(self) -> str:
+        pass
 
-    def __init__(self, nombre, numero, tiempo, implementation: Implementation):
-        self.implementation = implementation
+    def tiempoEstimado(self) -> str:
+        pass
+class BaseCompuesta(Base):
+
+    def __init__(self, nombre, bases: list[Base]):
+        self.nombre = nombre
+        self.base=bases
+
+    def numeroAmbulancias(self):
+        numero=0
+        for base in self.base:
+            numero+=base.numeroAmbulancias()
+        return numero
+
+    def tiempoEstimado(self):
+        tiempo=0
+        for base in self.base:
+            tiempo+=base.tiempoEstimado()
+        return tiempo/len(self.base)
+
+
+class BaseSimple(Base):
+
+    def __init__(self, nombre, numero, tiempo):
         self.nombre = nombre
         self.numero = numero
         self.tiempo = tiempo
 
-    def operation(self) -> str:
-        return (f"Abstraction: Operación base con:\n"
-                f"{self.implementation.operation_implementation1()}")
+    def numeroAmbulancias(self):
+        return self.numero
 
-
-class ExtendedAbstraction(Abstraction):
-    """
-    You can extend the Abstraction without changing the Implementation classes.
-    """
-
-    def operation(self) -> str:
-        return (f"ExtendedAbstraction: Operación extendida con:\n"
-                f"{self.implementation.operation_implementation2()}")
-
-    def operation2(self) -> str:
-        return (f"ExtendedAbstraction: Operación extendida con:\n"
-                f"{self.implementation.operation_implementation3()}")
-
+    def tiempoEstimado(self):
+        return self.tiempo
 
 class Implementation(ABC):
-    """
-    The Implementation defines the interface for all implementation classes. It
-    doesn't have to match the Abstraction's interface. In fact, the two
-    interfaces can be entirely different. Typically the Implementation interface
-    provides only primitive operations, while the Abstraction defines higher-
-    level operations based on those primitives.
-    """
 
     @abstractmethod
     def operation_implementation1(self) -> str:
         self.nombre = input("Introduce el nombre de la base (simple o compuesta): ")
         return self.nombre
 
-    @abstractmethod
-    def operation_implementation2(self) -> str:
-
-        self.numero = input("Introduce el número de ambulancias: ")
-        if(self.numero.isdigit()):
-            self.numero = int(self.numero)
-
-        if(self.nombre == "simple"):
-            if(self.numero > 3):
-                self.numero = 3
-
-        elif(self.nombre == "compuesta"):
-            if(self.numero > 5):
-                self.numero = 5
-
-        return self.numero
 
 
-    @abstractmethod
-    def operation_implementation3(self) -> str:
-        self.tiempo = input("Introduce el tiempo medio de asistencia: ")
-
-        return self.tiempo
-
-"""
-Each Concrete Implementation corresponds to a specific platform and implements
-the Implementation interface using that platform's API.
-"""
-
-
-class ConcreteImplementationA(Implementation):
+class ConcreteImplementationA(BaseSimple):
     def operation_implementation1(self) -> str:
-        return "ConcreteImplementationA: Aquí aparece el nombre de la base"
+        return "ConcreteImplementationA: Aquí aparece el caso de una base simple"
 
 
-class ConcreteImplementationB(Implementation):
+class ConcreteImplementationB(BaseCompuesta):
     def operation_implementation2(self) -> str:
-        return "ConcreteImplementationB: Aquí aparece el número de ambulancias"
-
-class ConcreteImplementationC(Implementation):
-    def operation_implementation3(self) -> str:
-        return "ConcreteImplementationB: Aquí aparece el tiempo medio de asistencia"
+        return "ConcreteImplementationB: Aquí aparece el caso de una base compuesta"
 
 
+def ejecutar():
 
-def client_code(abstraction: Abstraction) -> None:
-    """
-    Except for the initialization phase, where an Abstraction object gets linked
-    with a specific Implementation object, the client code should only depend on
-    the Abstraction class. This way the client code can support any abstraction-
-    implementation combination.
-    """
+    print("Ejemplo de la implementación de un patrón Bridge")
+    print("")
 
-    # ...
+    print("Introduce el nombre de la base (simple o compuesta): ")
+    nombre = input()
+    print("Introduce el número de ambulancias: ")
+    numero = int(input())
+    print("Introduce el tiempo estimado: ")
+    tiempo = int(input())
 
-    print(abstraction.operation(), end="")
+    if nombre == "simple":
+        base = ConcreteImplementationA(nombre, numero, tiempo)
+        print(base.operation_implementation1())
+    elif nombre == "compuesta":
+        base = ConcreteImplementationB(nombre, numero, tiempo)
+        print(base.operation_implementation2())
+    else:
+        print("No se ha introducido una base válida")
 
-    # ...
+    print("")
 
+    print("¿Quieres introducir otra base? (s/n)")
+    respuesta = input()
+    if respuesta == "s":
+        ejecutar()
+    else:
+        print("Hasta pronto")
 
 if __name__ == "__main__":
-    """
-    The client code should be able to work with any pre-configured abstraction-
-    implementation combination.
-    """
 
-    implementation = ConcreteImplementationA()
-    abstraction = Abstraction(implementation)
-    client_code(abstraction)
-
-    print("\n")
-
-    implementation = ConcreteImplementationB()
-    abstraction = ExtendedAbstraction(implementation)
-    client_code(abstraction)
-
-
-
-    implementation = ConcreteImplementationC()
-    abstraction = ExtendedAbstraction(implementation)
-    client_code(abstraction)
+    ejecutar()
