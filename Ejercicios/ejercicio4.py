@@ -30,56 +30,56 @@
 
 # Para la resolución de este problema, usaré el Factory Method.
 
-class Ordenador_base():
+# class Ordenador_base():
 
-	""" Esta es la base del ordenador, compuesta por la unidad central, un dispositivo de entreda y otro de salida. """
+# 	""" Esta es la base del ordenador, compuesta por la unidad central, un dispositivo de entreda y otro de salida. """
 
-	def __init__(self, unidad_central, dispositivo_entrada, dispositivo_salida):
-        self.unidad_central=unidad_central
-        self.dispositivo_entrada=dispositivo_entrada
-        self.dispositivo_salida=dispositivo_salida
+# 	def __init__(self, unidad_central, dispositivo_entrada, dispositivo_salida):
+#         self.unidad_central=unidad_central
+#         self.dispositivo_entrada=dispositivo_entrada
+#         self.dispositivo_salida=dispositivo_salida
 
 
-	# def localize(self, msg):
+# 	# def localize(self, msg):
 
-	# 	"""change the message using translations"""
-	# 	return self.translations.get(msg, msg)
+# 	# 	"""change the message using translations"""
+# 	# 	return self.translations.get(msg, msg)
 
-class dispositivo_entrada():
-	"""Definimos los periféricos de etrada: Teclado, Ratón y Tableta gráfica"""
+# class dispositivo_entrada():
+# 	"""Definimos los periféricos de etrada: Teclado, Ratón y Tableta gráfica"""
 
-	def __init__(self, nombre_fabricante, modelo, precio_venta):
-		self.nombre_fabricante=nombre_fabricante
-        self.modelo=modelo
-        self.precio_venta=precio_venta
+# 	def __init__(self, nombre_fabricante, modelo, precio_venta):
+# 		self.nombre_fabricante=nombre_fabricante
+#         self.modelo=modelo
+#         self.precio_venta=precio_venta
 
-    def necesario_conocer_de(self, tipo_de_conector, puerto_valido):
-        pass
+#     def necesario_conocer_de(self, tipo_de_conector, puerto_valido):
+#         pass
 
-	# def localize(self, msg):
+# 	# def localize(self, msg):
 
-	# 	"""change the message using translations"""
-	# 	return self.translations.get(msg, msg)
+# 	# 	"""change the message using translations"""
+# 	# 	return self.translations.get(msg, msg)
 
-class dispositivo_salida():
-	"""Definimos los periféricos de salida, Pantallas e impresora (de inyeccion o laser)"""
+# class dispositivo_salida():
+# 	"""Definimos los periféricos de salida, Pantallas e impresora (de inyeccion o laser)"""
 
-    def necesario_conocer_ds(self, puerto_valido, tipo_cartucho, pag_impresas_cambio_toner):
-        pass
+#     def necesario_conocer_ds(self, puerto_valido, tipo_cartucho, pag_impresas_cambio_toner):
+#         pass
 
-	# def localize(self, msg):
-	# 	return msg
+# 	# def localize(self, msg):
+# 	# 	return msg
 
-def Factory(language ="English"):
+# def Factory(language ="English"):
 
-	"""Factory Method"""
-	localizers = {
-		"Ordenador Base": Ordenador_base,
-		"Dispositivos de entrada": dispositivo_entrada(),
-		"Dispositivos de salida": dispositivo_salida(),
-	}
+# 	"""Factory Method"""
+# 	localizers = {
+# 		"Ordenador Base": Ordenador_base,
+# 		"Dispositivos de entrada": dispositivo_entrada(),
+# 		"Dispositivos de salida": dispositivo_salida(),
+# 	}
 
-	return localizers[language]()
+# 	return localizers[language]()
 
 
 class mi_lista():
@@ -105,6 +105,113 @@ class mi_lista():
         self.precio_total_lista #=- dispositivo_salida().concretar_disporiivo().precio
 
 
+
+from abc import ABCMeta, abstractmethod
+
+#lo que haría: dos IBulder para componentes de entrada y salida
+
+class IBuilder_entrada(metaclass=ABCMeta):
+    "La interfaz del builder de los dispositivos de entrada"
+
+    #todos los dispotivos de entrada tienen que tener los siguientes atributos
+    def __init__(self, nombre_fabricante, modelo,precio_venta):
+        self.nombre_fabricante = nombre_fabricante
+        self.modelo=modelo
+        self.precio_venta = precio_venta
+
+
+    @staticmethod
+    @abstractmethod
+    def build_teclado(self, tipo_conector, puerto_valido):
+        "Build del dispositivo de entrada teclado"
+        self.nombre_fabricante ='Prueba 1 Teclado'
+        self.modelo='Logitec'
+        self.precio_venta =18
+        tipo_conector='C'
+        puerto_valido=3
+
+
+
+    @staticmethod
+    @abstractmethod
+    def build_raton(self, tipo_conector, puerto_valido):
+        "Build del ratón"
+        self.nombre_fabricante ='Prueba 1 Ratón'
+        self.modelo='Asus'
+        self.precio_venta =20
+        tipo_conector='A'
+        puerto_valido=2
+
+    @staticmethod
+    @abstractmethod
+    def build_tabletaGrafica(self, tipo_conector, puerto_valido):
+        "Build de la tableta gráfica"
+        self.nombre_fabricante ='Prueba 1 TabletaGráfica'
+        self.modelo='Dell'
+        self.precio_venta =450
+        tipo_conector='B'
+        puerto_valido=1
+
+
+    @staticmethod
+    @abstractmethod
+    def build_pantallaTactil(self, tipo_conector, puerto_valido):
+        "Build de la tableta gráfica"
+        self.nombre_fabricante ='Prueba 1 pantalla táctil'
+        self.modelo='Samsung'
+        self.precio_venta =470
+        tipo_conector='G'
+        puerto_valido=6
+
+    @staticmethod
+    @abstractmethod
+    def get_result():
+        "Return the final product"
+
+class Builder(IBuilder):
+    "The Concrete Builder."
+
+    def __init__(self):
+        self.product = Product()
+
+    def build_part_a(self):
+        self.product.parts.append('a')
+        return self
+
+    def build_part_b(self):
+        self.product.parts.append('b')
+        return self
+
+    def build_part_c(self):
+        self.product.parts.append('c')
+        return self
+
+    def get_result(self):
+        return self.product
+
+class Product():
+    "The Product"
+
+    def __init__(self):
+        self.parts = []
+
+class Director:
+    "The Director, building a complex representation."
+
+    @staticmethod
+    def construct():
+        "Constructs and returns the final product"
+        return Builder()\
+            .build_part_a()\
+            .build_part_b()\
+            .build_part_c()\
+            .get_result()
+
+# The Client
+PRODUCT = Director.construct()
+print(PRODUCT.parts)
+
+
 # if __name__ == "__main__":
 
 # 	f = Factory("French")
@@ -123,3 +230,4 @@ class mi_lista():
 
 #lista de patrones de diseño que veo útiles para el ejercicio:
 #    -BUILDER
+#    -FACTORY
