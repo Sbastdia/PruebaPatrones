@@ -22,6 +22,10 @@
 
 
 
+#Nota: Se dispone de una clase mi_lista con las siguientes características: contador,precio_total_lista, poner(argumento) y quitar(argumento).
+
+
+
 
 
 # Para la resolución de este problema, usaré el Factory Method.
@@ -77,6 +81,30 @@ def Factory(language ="English"):
 
 	return localizers[language]()
 
+
+class mi_lista():
+    def __init__(self, precio_total_lista, lista_dispositivos):
+        self.precio_total_lista = precio_total_lista
+        self.lista_dispositivos = lista_dispositivos
+
+    def poner_lista(self, dispositivo):
+        #aqui sumar al precio de la lista, el precio del periférico que vamos a poner al ordenador
+        self.precio_total_lista #=+ dispositivo_salida().concretar_disporiivo().precio
+
+    def quitar_lista(self, dispositivo):
+        # primero hay que ver que el dispositivo que vamos a quitar, lo teniamos y que no es un elemento base pq no se puede quitar
+        if dispositivo is in self.lista_dispositivos:
+            self.lista_dispositivos.remove(self.lista_dispositivos)
+        elif:
+            print('No tenías este dispositivo añadido a lka lista')
+        if dispositivo== unidad_central:
+            print('Imposible quitar este dispositivo puesto que conforma la unidad básica del ordenador')
+
+        #tambien hay que comprobar que  minimo se queda con un dispositivo de entrada y otro de salida
+        #aqui sumar al precio de la lista, el precio del periférico que vamos a poner al ordenador
+        self.precio_total_lista #=- dispositivo_salida().concretar_disporiivo().precio
+
+
 # if __name__ == "__main__":
 
 # 	f = Factory("French")
@@ -89,3 +117,9 @@ def Factory(language ="English"):
 # 		print(f.localize(msg))
 # 		print(e.localize(msg))
 # 		print(s.localize(msg))
+
+
+
+
+#lista de patrones de diseño que veo útiles para el ejercicio:
+#    -BUILDER
