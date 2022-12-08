@@ -79,30 +79,33 @@ class ConcreteBuilder1(Builder):
         return product
 
     def produce_unidad_central(self) -> None:
-        self._product.add("unidad_central")
+        self._product.add("Unidad central")
 
     def produce_teclado(self) -> None:
         self._product.add("Teclado")
 
+
     def get_teclado(self,  nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
-        self._product.add("teclado")
+        self._product.add("Teclado")
         print('(Teclado) Nombre del fabricante:'+ nombre_fabricante)
         print('(Teclado) modelo: '+ modelo)
         print('(Teclado) precio: '+ str(precio))
         print('(Teclado) tipo_conector: '+ tipo_conector)
         print('(Teclado) puerto_valido: '+ str(puerto_valido))
+        self._product.sumar_precio(int(precio))
 
     def produce_raton(self) -> None:
         self._product.add("Ratón")
 
 
     def get_raton(self, nombre_fabricante, modelo, precio, tipo_conector, puerto_valido) -> None:
-        self._product.add("raton")
+        self._product.add("Raton")
         print('(Ratón) Nombre del fabricante:'+ nombre_fabricante)
         print('(Ratón) modelo: '+ modelo)
         print('(Ratón) precio: '+ str(precio))
         print('(Ratón) tipo_conector: '+ tipo_conector)
         print('(Ratón) puerto_valido: '+ str(puerto_valido))
+        self._product.sumar_precio(int(precio))
 
     def produce_tabletaGrafica(self) -> None:
         self._product.add("Tableta Gráfica")
@@ -114,23 +117,35 @@ class ConcreteBuilder1(Builder):
         print('(Tableta Gráfic) precio: '+ str(precio))
         print('(Tableta Gráfic) tipo_conector: '+ tipo_conector)
         print('(Tableta Gráfic) puerto_valido: '+ str(puerto_valido))
+        self._product.sumar_precio(int(precio))
+
 
     def produce_pantalla(self) -> None:
         self._product.add("Pantalla")
 
-    def get_pantalla(self, puerto_valido) -> None:
+    def get_pantalla(self, nombre_fabricante, modelo, precio, puerto_valido) -> None:
         self._product.add("Pantalla")
-        print('(Pantalla) Puerto válido: '+ puerto_valido)
+        self._product.sumar_precio(precio)
+        print('(Pantalla) Nombre del fabricante:'+ nombre_fabricante)
+        print('(Pantalla) modelo: '+ modelo)
+        print('(Pantalla) precio: '+ str(precio))
+        print('(Pantalla) puerto_valido: '+ str(puerto_valido))
+        self._product.sumar_precio(int(precio))
 
     def produce_impresora(self) -> None:
-        self._product.add("impresora")
+        self._product.add("Impresora")
 
-    def get_impresora(self, puerto_valido, tipo_impresora, tipo_recambio, pags):
+    def get_impresora(self, nombre_fabricante, modelo, precio,puerto_valido, tipo_impresora, tipo_recambio, pags):
         self._product.add("impresora")
-        print('(Impresora) Puerto válido: '+ str(puerto_valido))
+        print('(impresora) Nombre del fabricante:'+ nombre_fabricante)
+        print('(impresora) modelo: '+ modelo)
+        print('(impresora) precio: '+ str(precio))
+        print('(impresora) puerto_valido: '+ str(puerto_valido))
         print('(Impresora) Tipo de impresora: '+ tipo_impresora)
         print('(Impresora) Tipo de recambio: '+ tipo_recambio)
         print('(Impresora) Páginas impresas desde el último cambio: '+ str(pags))
+        self._product.sumar_precio(int(precio))
+
 
     def produce_pantalla_tactil(self) -> None:
         self._product.add("Pantalla Táctil")
@@ -142,18 +157,29 @@ class ConcreteBuilder1(Builder):
         print('(Pantalla Táctil) precio: '+ str(precio))
         print('(Pantalla Táctil) tipo_conector: '+ tipo_conector)
         print('(Pantalla Táctil) puerto_valido: '+ str(puerto_valido))
+        self._product.sumar_precio(int(precio))
+
 
 
 class Product1():
 
     def __init__(self) -> None:
         self.parts = []
+        self.precios=[]
 
     def add(self, part: Any) -> None:
         self.parts.append(part)
 
+    def sumar_precio(self, precio: Any) -> None:
+        self.precios.append(int(precio))
+
+
     def list_parts(self) -> None:
         print(f"Product parts: {', '.join(self.parts)}", end="")
+        print('\n')
+
+    def total_prize(self) -> None:
+        print(f"Precio total: {sum(self.precios)}", end="")
 
 
 class Director:
@@ -205,8 +231,9 @@ if __name__ == "__main__":
     builder.produce_unidad_central()
     builder.get_teclado('Pablo', 'ASUS', 12, 'T', 2)
     builder.get_raton('María', 'DELL', 34, 'A', 1)
-    builder.get_impresora(5, 'Inyección', 'Cartucho', 0)
+    builder.get_impresora('Alex','Apple', 130, 5, 'Inyección', 'Cartucho', 0)
     builder.product.list_parts()
+    builder.product.total_prize()
 
 
     print("\n")
@@ -217,7 +244,9 @@ if __name__ == "__main__":
     builder.get_teclado('Bill', 'Microsoft', 230, 'B', 1)
     builder.get_pantalla_tactil('Rubén', 'HP', 69, 'R', 9)
     builder.product.list_parts()
+    builder.product.total_prize()
+
 
 
     #quedaría: crear una condición que evalue que los elementos mínimos están en la lista para poder crear un ordenador
-    #también estructurar mejor el ConcreteBuilder1 (clases de entrada y salida)
+    #hacer que funcione lo del precio
