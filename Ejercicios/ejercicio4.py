@@ -80,6 +80,13 @@ class ConcreteBuilder1(Builder):
 
     def produce_unidad_central(self) -> None:
         self._product.add("Unidad central")
+        self._product.añadir_parteElemental("Unidad central")
+
+    def produce_elemento_entrada(self)-> None:
+        self._product.añadir_parteElemental("Elemento entrada")
+
+    def produce_elemento_salida(self)-> None:
+        self._product.añadir_parteElemental("Elemento salida")
 
     def produce_teclado(self) -> None:
         self._product.add("Teclado")
@@ -92,7 +99,7 @@ class ConcreteBuilder1(Builder):
         print('(Teclado) precio: '+ str(precio))
         print('(Teclado) tipo_conector: '+ tipo_conector)
         print('(Teclado) puerto_valido: '+ str(puerto_valido))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
     def produce_raton(self) -> None:
         self._product.add("Ratón")
@@ -105,7 +112,7 @@ class ConcreteBuilder1(Builder):
         print('(Ratón) precio: '+ str(precio))
         print('(Ratón) tipo_conector: '+ tipo_conector)
         print('(Ratón) puerto_valido: '+ str(puerto_valido))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
     def produce_tabletaGrafica(self) -> None:
         self._product.add("Tableta Gráfica")
@@ -117,7 +124,7 @@ class ConcreteBuilder1(Builder):
         print('(Tableta Gráfic) precio: '+ str(precio))
         print('(Tableta Gráfic) tipo_conector: '+ tipo_conector)
         print('(Tableta Gráfic) puerto_valido: '+ str(puerto_valido))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
 
     def produce_pantalla(self) -> None:
@@ -130,7 +137,7 @@ class ConcreteBuilder1(Builder):
         print('(Pantalla) modelo: '+ modelo)
         print('(Pantalla) precio: '+ str(precio))
         print('(Pantalla) puerto_valido: '+ str(puerto_valido))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
     def produce_impresora(self) -> None:
         self._product.add("Impresora")
@@ -144,7 +151,7 @@ class ConcreteBuilder1(Builder):
         print('(Impresora) Tipo de impresora: '+ tipo_impresora)
         print('(Impresora) Tipo de recambio: '+ tipo_recambio)
         print('(Impresora) Páginas impresas desde el último cambio: '+ str(pags))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
 
     def produce_pantalla_tactil(self) -> None:
@@ -157,7 +164,7 @@ class ConcreteBuilder1(Builder):
         print('(Pantalla Táctil) precio: '+ str(precio))
         print('(Pantalla Táctil) tipo_conector: '+ tipo_conector)
         print('(Pantalla Táctil) puerto_valido: '+ str(puerto_valido))
-        self._product.sumar_precio(int(precio))
+        self._product.add_precios(precio)
 
 
 
@@ -166,12 +173,16 @@ class Product1():
     def __init__(self) -> None:
         self.parts = []
         self.precios=[]
+        self.partes_elementales=[]
 
     def add(self, part: Any) -> None:
         self.parts.append(part)
 
-    def sumar_precio(self, precio: Any) -> None:
-        self.precios.append(int(precio))
+    def add_precios(self, precio: Any) -> None:
+        self.precios.append(precio)
+
+    def añadir_parteElemental(self, part: Any) -> None:
+        self.partes_elementales.append(part)
 
 
     def list_parts(self) -> None:
@@ -179,7 +190,12 @@ class Product1():
         print('\n')
 
     def total_prize(self) -> None:
-        print(f"Precio total: {sum(self.precios)}", end="")
+        print(f"Precio total: {', '.join(self.precios)}", end="")
+        print('\n')
+
+    def lista_partes_elementales(self) -> None:
+        print(f"Elemental Product parts: {', '.join(self.partes_elementales)}", end="")
+
 
 
 class Director:
@@ -197,8 +213,8 @@ class Director:
 
     def build_minimal_viable_product(self) -> None:
         self.builder.produce_unidad_central()
-        self.builder.produce_teclado()
-        self.builder.produce_pantalla()
+        self.builder.produce_elemento_entrada()
+        self.builder.produce_elemento_salida()
 
     def build_full_featured_product(self) -> None:
         self.builder.produce_unidad_central()
@@ -217,7 +233,7 @@ if __name__ == "__main__":
 
     print("Standard basic product: ")
     director.build_minimal_viable_product()
-    builder.product.list_parts()
+    builder.product.lista_partes_elementales()
 
     print("\n")
 
@@ -244,6 +260,8 @@ if __name__ == "__main__":
     builder.get_teclado('Bill', 'Microsoft', 230, 'B', 1)
     builder.get_pantalla_tactil('Rubén', 'HP', 69, 'R', 9)
     builder.product.list_parts()
+    if 'Unidad central' in builder.product.parts:
+        print('Unidad minima alcanzada')
     builder.product.total_prize()
 
 
